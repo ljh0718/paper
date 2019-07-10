@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yizhidou.paper.mapper.TestScheduleMapper" >
+  <resultMap id="BaseResultMap" type="com.yizhidou.paper.entity.TestSchedule" >
+    <constructor >
+      <idArg column="tsId" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="paperId" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="join" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="start" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="over" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="time" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="is_advance" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    tsId, paperId, join, start, over, time, is_advance
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.yizhidou.paper.entity.TestScheduleExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from test_schedule
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from test_schedule
+    where tsId = #{tsid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from test_schedule
+    where tsId = #{tsid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.yizhidou.paper.entity.TestScheduleExample" >
+    delete from test_schedule
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.yizhidou.paper.entity.TestSchedule" >
+    insert into test_schedule (tsId, paperId, join, 
+      start, over, time, 
+      is_advance)
+    values (#{tsid,jdbcType=INTEGER}, #{paperid,jdbcType=INTEGER}, #{join,jdbcType=VARCHAR}, 
+      #{start,jdbcType=TIMESTAMP}, #{over,jdbcType=TIMESTAMP}, #{time,jdbcType=INTEGER}, 
+      #{isAdvance,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yizhidou.paper.entity.TestSchedule" >
+    insert into test_schedule
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="tsid != null" >
+        tsId,
+      </if>
+      <if test="paperid != null" >
+        paperId,
+      </if>
+      <if test="join != null" >
+        join,
+      </if>
+      <if test="start != null" >
+        start,
+      </if>
+      <if test="over != null" >
+        over,
+      </if>
+      <if test="time != null" >
+        time,
+      </if>
+      <if test="isAdvance != null" >
+        is_advance,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="tsid != null" >
+        #{tsid,jdbcType=INTEGER},
+      </if>
+      <if test="paperid != null" >
+        #{paperid,jdbcType=INTEGER},
+      </if>
+      <if test="join != null" >
+        #{join,jdbcType=VARCHAR},
+      </if>
+      <if test="start != null" >
+        #{start,jdbcType=TIMESTAMP},
+      </if>
+      <if test="over != null" >
+        #{over,jdbcType=TIMESTAMP},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=INTEGER},
+      </if>
+      <if test="isAdvance != null" >
+        #{isAdvance,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.yizhidou.paper.entity.TestScheduleExample" resultType="java.lang.Integer" >
+    select count(*) from test_schedule
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update test_schedule
+    <set >
+      <if test="record.tsid != null" >
+        tsId = #{record.tsid,jdbcType=INTEGER},
+      </if>
+      <if test="record.paperid != null" >
+        paperId = #{record.paperid,jdbcType=INTEGER},
+      </if>
+      <if test="record.join != null" >
+        join = #{record.join,jdbcType=VARCHAR},
+      </if>
+      <if test="record.start != null" >
+        start = #{record.start,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.over != null" >
+        over = #{record.over,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.time != null" >
+        time = #{record.time,jdbcType=INTEGER},
+      </if>
+      <if test="record.isAdvance != null" >
+        is_advance = #{record.isAdvance,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update test_schedule
+    set tsId = #{record.tsid,jdbcType=INTEGER},
+      paperId = #{record.paperid,jdbcType=INTEGER},
+      join = #{record.join,jdbcType=VARCHAR},
+      start = #{record.start,jdbcType=TIMESTAMP},
+      over = #{record.over,jdbcType=TIMESTAMP},
+      time = #{record.time,jdbcType=INTEGER},
+      is_advance = #{record.isAdvance,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yizhidou.paper.entity.TestSchedule" >
+    update test_schedule
+    <set >
+      <if test="paperid != null" >
+        paperId = #{paperid,jdbcType=INTEGER},
+      </if>
+      <if test="join != null" >
+        join = #{join,jdbcType=VARCHAR},
+      </if>
+      <if test="start != null" >
+        start = #{start,jdbcType=TIMESTAMP},
+      </if>
+      <if test="over != null" >
+        over = #{over,jdbcType=TIMESTAMP},
+      </if>
+      <if test="time != null" >
+        time = #{time,jdbcType=INTEGER},
+      </if>
+      <if test="isAdvance != null" >
+        is_advance = #{isAdvance,jdbcType=INTEGER},
+      </if>
+    </set>
+    where tsId = #{tsid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yizhidou.paper.entity.TestSchedule" >
+    update test_schedule
+    set paperId = #{paperid,jdbcType=INTEGER},
+      join = #{join,jdbcType=VARCHAR},
+      start = #{start,jdbcType=TIMESTAMP},
+      over = #{over,jdbcType=TIMESTAMP},
+      time = #{time,jdbcType=INTEGER},
+      is_advance = #{isAdvance,jdbcType=INTEGER}
+    where tsId = #{tsid,jdbcType=INTEGER}
+  </update>
+</mapper>

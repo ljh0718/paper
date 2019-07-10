@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.yizhidou.paper.mapper.QuestionMapper">
+
+    <insert id="insertQuestion" useGeneratedKeys="true" keyProperty="questionTypeId">
+        insert into question_type(
+            question_type,
+            question_knows,
+            question_level
+        )values (
+            #{questionType},
+            #{questionKnows},
+            #{questionLevel}
+        )
+    </insert>
+
+    <!-- Integer deleteByQid(Integer id); -->
+    <delete id="deleteByQid">
+        delete
+            from
+        question_type
+        <where>
+            <foreach
+                    collection="list" item="questionTypeId"
+                    open="question_type_id in (" close=")" separator=",">
+                #{questionTypeId}
+            </foreach>
+        </where>
+    </delete>
+</mapper>

@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yizhidou.paper.mapper.QuestionAnswerMapper" >
+  <resultMap id="BaseResultMap" type="com.yizhidou.paper.entity.QuestionAnswer" >
+    <constructor >
+      <idArg column="qaId" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="qa_type_choice" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="qa_content" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="qa_key" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="qa_value" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    qaId, qa_type_choice, qa_content, qa_key, qa_value
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.yizhidou.paper.entity.QuestionAnswerExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from question_answer
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from question_answer
+    where qaId = #{qaid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from question_answer
+    where qaId = #{qaid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.yizhidou.paper.entity.QuestionAnswerExample" >
+    delete from question_answer
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.yizhidou.paper.entity.QuestionAnswer" >
+    insert into question_answer (qaId, qa_type_choice, qa_content, 
+      qa_key, qa_value)
+    values (#{qaid,jdbcType=INTEGER}, #{qaTypeChoice,jdbcType=INTEGER}, #{qaContent,jdbcType=VARCHAR}, 
+      #{qaKey,jdbcType=VARCHAR}, #{qaValue,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yizhidou.paper.entity.QuestionAnswer" >
+    insert into question_answer
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="qaid != null" >
+        qaId,
+      </if>
+      <if test="qaTypeChoice != null" >
+        qa_type_choice,
+      </if>
+      <if test="qaContent != null" >
+        qa_content,
+      </if>
+      <if test="qaKey != null" >
+        qa_key,
+      </if>
+      <if test="qaValue != null" >
+        qa_value,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="qaid != null" >
+        #{qaid,jdbcType=INTEGER},
+      </if>
+      <if test="qaTypeChoice != null" >
+        #{qaTypeChoice,jdbcType=INTEGER},
+      </if>
+      <if test="qaContent != null" >
+        #{qaContent,jdbcType=VARCHAR},
+      </if>
+      <if test="qaKey != null" >
+        #{qaKey,jdbcType=VARCHAR},
+      </if>
+      <if test="qaValue != null" >
+        #{qaValue,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.yizhidou.paper.entity.QuestionAnswerExample" resultType="java.lang.Integer" >
+    select count(*) from question_answer
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update question_answer
+    <set >
+      <if test="record.qaid != null" >
+        qaId = #{record.qaid,jdbcType=INTEGER},
+      </if>
+      <if test="record.qaTypeChoice != null" >
+        qa_type_choice = #{record.qaTypeChoice,jdbcType=INTEGER},
+      </if>
+      <if test="record.qaContent != null" >
+        qa_content = #{record.qaContent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.qaKey != null" >
+        qa_key = #{record.qaKey,jdbcType=VARCHAR},
+      </if>
+      <if test="record.qaValue != null" >
+        qa_value = #{record.qaValue,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update question_answer
+    set qaId = #{record.qaid,jdbcType=INTEGER},
+      qa_type_choice = #{record.qaTypeChoice,jdbcType=INTEGER},
+      qa_content = #{record.qaContent,jdbcType=VARCHAR},
+      qa_key = #{record.qaKey,jdbcType=VARCHAR},
+      qa_value = #{record.qaValue,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yizhidou.paper.entity.QuestionAnswer" >
+    update question_answer
+    <set >
+      <if test="qaTypeChoice != null" >
+        qa_type_choice = #{qaTypeChoice,jdbcType=INTEGER},
+      </if>
+      <if test="qaContent != null" >
+        qa_content = #{qaContent,jdbcType=VARCHAR},
+      </if>
+      <if test="qaKey != null" >
+        qa_key = #{qaKey,jdbcType=VARCHAR},
+      </if>
+      <if test="qaValue != null" >
+        qa_value = #{qaValue,jdbcType=INTEGER},
+      </if>
+    </set>
+    where qaId = #{qaid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yizhidou.paper.entity.QuestionAnswer" >
+    update question_answer
+    set qa_type_choice = #{qaTypeChoice,jdbcType=INTEGER},
+      qa_content = #{qaContent,jdbcType=VARCHAR},
+      qa_key = #{qaKey,jdbcType=VARCHAR},
+      qa_value = #{qaValue,jdbcType=INTEGER}
+    where qaId = #{qaid,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.yizhidou.paper.mapper.GapFillingMapper">
+
+    <insert id="insertGf" >
+        insert into gap_filling(
+            gf_type_choice,
+            gf__content,gf_key,
+            gf_value
+        )values (
+            #{gfTypeChoice},
+            #{gfContent},#{gfKey},
+            #{gfValue}
+        )
+    </insert>
+
+    <!-- Integer deleteByGfid(Integer id); -->
+    <delete id="deleteByGfid">
+        delete
+            from
+        gap_filling
+        <where>
+            <foreach
+                    collection="list" item="gfTypeChoice"
+                    open="gf_type_choice in (" close=")" separator=",">
+                #{gfTypeChoice}
+            </foreach>
+        </where>
+    </delete>
+
+    <!-- List<GapFilling> findByQTid(List<Integer> ids); -->
+    <select id="findByQTid"
+                resultType="com.yizhidou.paper.entity.GapFilling">
+            select
+                gf_type_choice as gfTypeChoice,
+                gf__content as gfContent,
+                gf_key as gfKey,
+                gf_value as gfValue
+            from
+                gap_filling
+            <where>
+                <foreach
+                        collection="list" item="gfTypeChoice"
+                        open="gf_type_choice in(" close=")" separator=",">
+                    #{gfTypeChoice}
+                </foreach>
+            </where>
+    </select>
+
+    <!-- List<GapFilling> findByknowsAndLevel(
+                 List<String> knowNames,Integer level); -->
+    <select id="findByknowsAndLevel"
+            resultType="com.yizhidou.paper.entity.GapFilling">
+            select
+                g.gf_type_choice as gfTypeChoice,
+                g.gf__content as gfContent,
+                g.gf_key as gfKey,
+                g.gf_value as gfValue
+            from
+                gap_filling g
+            join
+                question_type q
+            on
+                g.gf_type_choice = q.question_type_id
+            <where>
+                <if test="level != null">
+                    question_level=#{level}
+                </if>
+                <foreach
+                        collection="knowNames" item="0"
+                        open="and question_knows in (" close=")" separator=",">
+                    #{0}
+                </foreach>
+            </where>
+    </select>
+
+    <!-- List<GapFilling> findByknows(
+                List<String> knowNames,Integer amount); -->
+    <select id="findByknows"
+            resultType="com.yizhidou.paper.entity.GapFilling">
+            select
+                g.gf_type_choice as gfTypeChoice,
+                g.gf__content as gfContent,
+                g.gf_key as gfKey,
+                g.gf_value as gfValue
+            from
+                gap_filling g
+            join
+                question_type q
+            on
+                g.gf_type_choice = q.question_type_id
+            <where>
+                <foreach
+                    collection="knowNames" item="0"
+                    open="question_knows in (" close=")" separator=",">
+                    #{0}
+                </foreach>
+            </where>
+            order by
+                rand()
+            limit
+                #{amount}
+    </select>
+
+    <select id="findAll"
+            resultType="com.yizhidou.paper.entity.GapFilling">
+            select
+                gfId,
+                gf_type_choice as gfTypeChoice,
+                gf__content as gfContent,
+                gf_key as gfKey,
+                gf_value as gfValue
+            from
+                gap_filling
+    </select>
+</mapper>

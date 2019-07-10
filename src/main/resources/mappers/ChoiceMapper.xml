@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.yizhidou.paper.mapper.ChoiceMapper">
+
+    <!-- Integer insertCh(Choice ch); -->
+    <insert id="insertCh" >
+        insert into choice_question(
+            question_type_choice,
+            question_content,choice1,
+            choice2,choice3,choice4,
+            question_key,question_value
+        )values (
+            #{questionTypeChoice},
+            #{questionContent},#{choice1},
+            #{choice2},#{choice3},#{choice4},
+            #{questionKey},#{questionValue}
+        )
+    </insert>
+
+    <!-- Integer deleteByChid(List<Integer> id); -->
+    <delete id="deleteByChid">
+        delete
+            from
+        choice_question
+        <where>
+            <foreach
+                    collection="list" item="questionTypeChoice"
+                    open="question_type_choice in (" close=")" separator=",">
+                #{questionTypeChoice}
+            </foreach>
+        </where>
+    </delete>
+
+    <select id="findAll"
+            resultType="com.yizhidou.paper.entity.Choice">
+            select
+                cqId,
+                question_type_choice as questionTypeChoice,
+                question_content as questionContent,
+                choice1,choice2,choice3,choice4,
+                question_key as questionKey,
+                question_value as questionValue
+            from
+                choice_question
+    </select>
+
+    <!-- List<Choice> findByQTid(List<Integer> list); -->
+    <select id="findByQTid"
+                resultType="com.yizhidou.paper.entity.Choice">
+            select
+                question_type_choice as questionTypeChoice,
+                question_content as questionContent,
+                choice1,choice2,choice3,choice4,
+                question_key as questionKey,
+                question_value as questionValue
+            from
+                choice_question
+            <where>
+                <foreach
+                        collection="list" item="questionTypeChoice"
+                        open="question_type_choice in(" close=")" separator=",">
+                    #{questionTypeChoice}
+                </foreach>
+            </where>
+    </select>
+
+    <!-- List<Choice> findByknowsAndLevel(
+                 List<String> knowNames,Integer level); -->
+    <select id="findByknowsAndLevel"
+            resultType="com.yizhidou.paper.entity.Choice">
+            select
+                question_type_choice as questionTypeChoice,
+                question_content as questionContent,
+                choice1,choice2,choice3,choice4,
+                question_key as questionKey,
+                question_value as questionValue
+            from
+                choice_question c
+            join
+                question_type q
+            on
+                c.question_type_choice = q.question_type_id
+            <where>
+                <if test="level != null">
+                    question_level=#{level}
+                </if>
+                <foreach
+                        collection="knowNames" item="knowNames"
+                        open="and question_knows in (" close=")" separator=",">
+                    #{knowNames}
+                </foreach>
+            </where>
+    </select>
+
+    <!-- List<Choice> findByknows(
+                List<String> knowNames,Integer amount); -->
+    <select id="findByknows"
+            resultType="com.yizhidou.paper.entity.Choice">
+            select
+                question_type_choice as questionTypeChoice,
+                question_content as questionContent,
+                choice1,choice2,choice3,choice4,
+                question_key as questionKey,
+                question_value as questionValue
+            from
+                choice_question c
+            join
+                question_type q
+            on
+                c.question_type_choice = q.question_type_id
+            <where>
+                <foreach
+                    collection="knowNames" item="knowNames"
+                    open="question_knows in (" close=")" separator=",">
+                    #{knowNames}
+                </foreach>
+            </where>
+            order by
+                rand()
+            limit
+                #{amount}
+    </select>
+</mapper>

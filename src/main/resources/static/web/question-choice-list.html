@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+  
+  <head>
+    <meta charset="UTF-8">
+    <title>欢迎页面-X-admin2.1</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <link rel="stylesheet" href="../css/font.css">
+    <link rel="stylesheet" href="../css/xadmin.css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="../lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../js/xadmin.js"></script>
+    <script type="text/javascript" src="../js/cookie.js"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  
+  <body onload="showChoiceList()">
+    <div class="x-nav">
+      <span class="layui-breadcrumb">
+        <a href="">首页</a>
+        <a href="">演示</a>
+        <a>
+          <cite>导航元素</cite></a>
+      </span>
+      <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon" style="line-height:30px">ဂ</i></a>
+    </div>
+    <div class="x-body">
+      <div class="layui-row">
+        <form id="form-find" class="layui-form layui-col-md12 x-so">
+          <input class="layui-input" placeholder="开始日" name="start" id="start">
+          <input class="layui-input" placeholder="截止日" name="end" id="end">
+          <div class="layui-input-inline">
+            <input type="checkbox" name="name" />语文
+            <input type="checkbox" name="name" />数学
+            <input type="checkbox" name="name" />英语
+            <input type="checkbox" name="name" />物理
+            <input type="checkbox" name="name" />化学
+          </div>
+          <div class="layui-input-inline">
+            <select name="level">
+              <option>简单</option>
+              <option>一般</option>
+              <option>困难</option>
+            </select>
+          </div>
+          <input type="text" name="gfIds"  placeholder="请输入题目编号" autocomplete="off" class="layui-input">
+          <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+        </form>
+      </div>
+      <xblock>
+        <button class="layui-btn layui-btn-danger" onclick="deleteByCids()"><i class="layui-icon"></i>批量删除</button>
+        <button class="layui-btn" onclick="x_admin_show('添加用户','./question-choice-add.html')"><i class="layui-icon"></i>添加</button>
+        <span class="x-right" style="line-height:40px">共有数据：88 条</span>
+      </xblock>
+      <table class="layui-table">
+        <thead>
+          <tr>
+            <th>
+              <input id="cbx" type="checkbox" name="questionCheck" value="${cqId}" onclick="demo()"/>
+            </th>
+            <th>题目编号</th>
+            <th>题库编号</th>
+            <th>题目内容</th>
+            <th>选项A</th>
+            <th>选项B</th>
+            <th>选项C</th>
+            <th>选项D</th>
+            <th>正确答案</th>
+            <th>分值</th>
+            <th >操作</th>
+            </tr>
+        </thead>
+        <tbody id="choice-list">
+          <tr>
+            <td>
+              <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i class="layui-icon">&#xe605;</i></div>
+            </td>
+            <td>2017009171822298053</td>
+            <td>老王:18925139194</td>
+            <td>7829.10</td>
+            <td>7854.10</td>
+            <td class="td-manage">
+              <a title="查看"  onclick="x_admin_show('编辑','order-view.html')" href="javascript:;">
+                <i class="layui-icon">&#xe63c;</i>
+              </a>
+              <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">
+                <i class="layui-icon">&#xe640;</i>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="page">
+        <div>
+          <a class="prev" href="">&lt;&lt;</a>
+          <a class="num" href="">1</a>
+          <span class="current">2</span>
+          <a class="num" href="">3</a>
+          <a class="num" href="">489</a>
+          <a class="next" href="">&gt;&gt;</a>
+        </div>
+      </div>
+
+    </div>
+    <script>var _hmt = _hmt || []; (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+
+    <script type="text/javascript">
+      function showChoiceList() {
+        $.ajax({
+          url:"/choice/fa",
+          type:"GET",
+          dataType:"json",
+          success:function(json) {
+            if (json.status == 200) {
+              var list = json.data;
+              $("#choice-list").empty();
+              for (var i = 0; i < list.length; i++) {
+                console.log(list[i].name);
+                var html = '<tr>'
+                        + '<td><input id="cbx" type="checkbox" name="questionCheck" value="${cqId}"/></td>'
+                        + '<td>#{cqId}</td>'
+                        + '<td class="qtc">#{questionTypeChoice}</td>'
+                        + '<td>#{questionContent}</td>'
+                        + '<td>#{choice1}</td>'
+                        + '<td>#{choice2}</td>'
+                        + '<td>#{choice3}</td>'
+                        + '<td>#{choice4}</td>'
+                        + '<td>#{questionKey}</td>'
+                        + '<td>#{questionValue}</td>'
+                        + '<td><a class="btn btn-xs add-del btn-info" onclick="deleteByCids()"><span class="fa fa-trash-o"></span> 删除</a></td>'
+                        + '</tr>';
+
+                html = html.replace(/#{cqId}/g, list[i].cqId);
+                html = html.replace(/#{questionTypeChoice}/g, list[i].questionTypeChoice);
+                html = html.replace(/#{questionContent}/g, list[i].questionContent);
+                html = html.replace(/#{choice1}/g, list[i].choice1);
+                html = html.replace(/#{choice2}/g, list[i].choice2);
+                html = html.replace(/#{choice3}/g, list[i].choice3);
+                html = html.replace(/#{choice4}/g, list[i].choice4);
+                html = html.replace(/#{questionKey}/g, list[i].questionKey);
+                html = html.replace(/#{questionValue}/g, list[i].questionValue);
+
+                $("#choice-list").append(html);
+              }
+              $(".add-def:eq(0)").hide();
+            } else {
+              $("#choice-list").empty();
+            }
+          }
+        });
+      }
+
+      //批量删除
+      function deleteByCids() {
+        var questionList = [];
+        var checkedList=$("input[name='questionCheck']:checked")
+        for(var i=0;i<checkedList.length;i++){
+          questionList.push(checkedList[i].parentNode.nextElementSibling.nextElementSibling.innerText);
+        }
+        if (checkedList.length == 0) {
+          alert("至少选择一项删除！");
+          return;
+        }
+        if(!confirm("确定删除这些题目?")){
+          return;
+        }
+        $.ajax({
+          "url":"/choice/dbi",
+          "type":"get",
+          "data":"questionTypeChoice="+questionList,
+          "dataType":"json",
+          "success":function(json) {
+            if (json.status == 200) {
+              showChoiceList();
+            } else {
+              alert(json.message);
+            }
+          }
+        });
+      }
+
+      function demo(){
+        var allcheck=document.getElementById("cbx");
+        var choice=document.getElementsByName("questionCheck");
+        for(var i=0;i<choice.length;i++){
+          choice[i].checked=allcheck.checked;
+        }
+      }
+    </script>
+  </body>
+
+</html>

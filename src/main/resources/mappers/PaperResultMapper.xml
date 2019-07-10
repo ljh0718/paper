@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yizhidou.paper.mapper.PaperResultMapper" >
+  <resultMap id="BaseResultMap" type="com.yizhidou.paper.entity.PaperResult" >
+    <constructor >
+      <idArg column="res_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="paper_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="person_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="ques_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="res" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    res_id, paper_id, person_id, ques_id, res
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.yizhidou.paper.entity.PaperResultExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from paper_result
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from paper_result
+    where res_id = #{resId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from paper_result
+    where res_id = #{resId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.yizhidou.paper.entity.PaperResultExample" >
+    delete from paper_result
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.yizhidou.paper.entity.PaperResult" >
+    insert into paper_result (res_id, paper_id, person_id, 
+      ques_id, res)
+    values (#{resId,jdbcType=INTEGER}, #{paperId,jdbcType=INTEGER}, #{personId,jdbcType=INTEGER}, 
+      #{quesId,jdbcType=INTEGER}, #{res,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yizhidou.paper.entity.PaperResult" >
+    insert into paper_result
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="resId != null" >
+        res_id,
+      </if>
+      <if test="paperId != null" >
+        paper_id,
+      </if>
+      <if test="personId != null" >
+        person_id,
+      </if>
+      <if test="quesId != null" >
+        ques_id,
+      </if>
+      <if test="res != null" >
+        res,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="resId != null" >
+        #{resId,jdbcType=INTEGER},
+      </if>
+      <if test="paperId != null" >
+        #{paperId,jdbcType=INTEGER},
+      </if>
+      <if test="personId != null" >
+        #{personId,jdbcType=INTEGER},
+      </if>
+      <if test="quesId != null" >
+        #{quesId,jdbcType=INTEGER},
+      </if>
+      <if test="res != null" >
+        #{res,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.yizhidou.paper.entity.PaperResultExample" resultType="java.lang.Integer" >
+    select count(*) from paper_result
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update paper_result
+    <set >
+      <if test="record.resId != null" >
+        res_id = #{record.resId,jdbcType=INTEGER},
+      </if>
+      <if test="record.paperId != null" >
+        paper_id = #{record.paperId,jdbcType=INTEGER},
+      </if>
+      <if test="record.personId != null" >
+        person_id = #{record.personId,jdbcType=INTEGER},
+      </if>
+      <if test="record.quesId != null" >
+        ques_id = #{record.quesId,jdbcType=INTEGER},
+      </if>
+      <if test="record.res != null" >
+        res = #{record.res,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update paper_result
+    set res_id = #{record.resId,jdbcType=INTEGER},
+      paper_id = #{record.paperId,jdbcType=INTEGER},
+      person_id = #{record.personId,jdbcType=INTEGER},
+      ques_id = #{record.quesId,jdbcType=INTEGER},
+      res = #{record.res,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yizhidou.paper.entity.PaperResult" >
+    update paper_result
+    <set >
+      <if test="paperId != null" >
+        paper_id = #{paperId,jdbcType=INTEGER},
+      </if>
+      <if test="personId != null" >
+        person_id = #{personId,jdbcType=INTEGER},
+      </if>
+      <if test="quesId != null" >
+        ques_id = #{quesId,jdbcType=INTEGER},
+      </if>
+      <if test="res != null" >
+        res = #{res,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where res_id = #{resId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yizhidou.paper.entity.PaperResult" >
+    update paper_result
+    set paper_id = #{paperId,jdbcType=INTEGER},
+      person_id = #{personId,jdbcType=INTEGER},
+      ques_id = #{quesId,jdbcType=INTEGER},
+      res = #{res,jdbcType=VARCHAR}
+    where res_id = #{resId,jdbcType=INTEGER}
+  </update>
+
+  <select id="">
+    select
+
+  </select>
+
+</mapper>
