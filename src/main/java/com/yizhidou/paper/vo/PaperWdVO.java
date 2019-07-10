@@ -3,7 +3,7 @@ package com.yizhidou.paper.vo;
 import java.io.Serializable;
 
 /**
- * 题库和问答题VO类
+ * 问答题VO类
  */
 
 public class PaperWdVO implements Serializable {
